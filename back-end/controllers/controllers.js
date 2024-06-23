@@ -1,8 +1,9 @@
 const { validationResult } = require('express-validator');
 const database = require('../db');
+const data = require("../data/products");
 
-const initDatabase = (req, res) => {
-    const sqlQuery =  'CREATE TABLE IF NOT EXISTS emails(id int AUTO_INCREMENT, firstname VARCHAR(50), lastname VARCHAR(50), email VARCHAR(50), PRIMARY KEY(id))';
+const initTable = (req, res) => {
+    const sqlQuery =  'CREATE TABLE IF NOT EXISTS bookstore(id int AUTO_INCREMENT, title VARCHAR(50), author VARCHAR(50), image VARCHAR(50), pages VARCHAR(50), country VARCHAR(50), price VARCHAR(50), url VARCHAR(100), PRIMARY KEY(id))';
 
     database.query(sqlQuery, (err) => {
         if (err) throw err;
@@ -11,40 +12,64 @@ const initDatabase = (req, res) => {
     });
 };
 
-const getSubscribers = (req, res) => {
-    const sqlQuery = 'SELECT * FROM emails';
+const initDatabase = (req, res) => {
+    
+    const values = data.map(book => [book.title, book.author, book.image, book.pages, book.country, book.price, book.url]);
+    
+    const sqlQuery = `INSERT INTO bookstore (title, author, image, pages, country, price, url) VALUES ?`;
+
+    database.query(sqlQuery, [values],(err, result) => {
+        if (err) throw err;
+
+        res.send("Done initialize database!")
+    });
+
+        
+    
+
+}
+
+const getAllBooks = (req, res) => {
+    const sqlQuery = 'SELECT * FROM bookstore';
 
     database.query(sqlQuery, (err, result) => {
         if (err) throw err;
 
-        res.json({ 'emails': result });
+        res.json({ 'bookstore': result });
     });
 };
 
-const addSubscriber = (req, res) => {
+
+const addBook = (req, res) => {
     const errors = validationResult(req);
 
     if (errors.array().length > 0) {
         res.send(errors.array());
     } else {
         const subscriber = {
-            firstname: req.body.firstname,
-            lastname: req.body.lastname,
-            email: req.body.email
+            title: req.body.title, 
+            author: req.body.author, 
+            image: req.body.image, 
+            pages: req.body.pages, 
+            country: req.body.country, 
+            price: req.body.price, 
+            url: req.body.url,  
+
         };
 
-        const sqlQuery = 'INSERT INTO emails SET ?';
+        const sqlQuery = 'INSERT INTO bookstore SET ?';
 
         database.query(sqlQuery, subscriber, (err, row) => {
             if (err) throw err;
 
-            res.send('Subscribed successfully!');
+            res.send('Add book successfully!');
         });
     }
 };
 
 module.exports = {
     initDatabase,
-    getSubscribers,
-    addSubscriber
+    initTable,
+    getAllBooks,
+    addBook
 }
