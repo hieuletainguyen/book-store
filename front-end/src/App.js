@@ -3,6 +3,8 @@ import Cart from "./components/Cart";
 import NavBar from "./components/NavBar";
 import Home from "./components";
 import Signup from './components/Signup';
+import Signout from "./components/Signout";
+import Signin from "./components/Signin";
 import {
   BrowserRouter as Router, 
   Routes, 
@@ -13,6 +15,10 @@ import {
 function App() {
   const [items, setItems] = useState([]);
   const [products, setProducts] = useState([]);
+  const [isLoggedIn, setIsLoggedIn] = useState({
+    status: false,
+    username: ''
+  })
 
   
   const addToCart = (idToAdd) => {
@@ -40,13 +46,9 @@ function App() {
       
       try {
         const response = await fetch("http://localhost:9898/get-books");
-        const body = response.body;
-        
-        const reader = body.getReader();
-
-        const books = [];
-        
-        setProducts(books);
+        const data = await response.json();
+        const bookstore = data.bookstore;
+        setProducts(shuffleArray(bookstore));
         
       }
       catch (error) {
@@ -70,13 +72,15 @@ function App() {
   return(
     <Router>
       
-      <NavBar />
+      <NavBar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>
       <Routes>
         <Route path="/" element={<Home addToCart={addToCart} removeFromCart={removeFromCart} products={products} items={items}/>} />;
 
         <Route path="/cart" element={<Cart removeFromCart={removeFromCart} inCart={itemDetails}/>} />;
 
         <Route path="/signup" element={<Signup /> }/>;
+
+        <Route path="/signin" element={<Signin />} />
 
       </Routes>
     </Router>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Nav, NavLink, Bars, NavMenu, NavBtn, NavBtnLink} from "./NavElement";
 
-const NavBar = () => {
+const NavBar = (props) => {
     return (
         <>
             <Nav>
@@ -16,9 +16,11 @@ const NavBar = () => {
                         Cart
                     </NavLink>
 
+                {!props.isLoggedIn.status &&
                     <NavLink to="/signup">
                         Sign Up
                     </NavLink>
+                }
                 </NavMenu>
 
                 <NavBtn>
