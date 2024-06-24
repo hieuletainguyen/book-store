@@ -1,6 +1,6 @@
 import {useState} from 'react';
 import "./Signin.css";
-import { useAsyncError, useNavigate } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 
 function Signup (props) {
     const [username, setUsername] = useState('');
@@ -60,7 +60,7 @@ function Signup (props) {
         }
 
         const accountExist = checkAccountExist();
-        if (accountExist){
+        if (accountExist === true){
             setUsername("");
             setPassword("");
             return;

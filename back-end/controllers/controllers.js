@@ -1,6 +1,10 @@
 const { validationResult } = require('express-validator');
 const database = require('../db');
 const data = require("../data/products");
+const jwt = require("jsonwebtoken")
+const bcrypt = require("bcrypt")
+
+const jwtSecretKet = "tatsuyahirano"
 
 const initTable = (req, res) => {
     const sqlQuery =  'CREATE TABLE IF NOT EXISTS bookstore(id int AUTO_INCREMENT, title VARCHAR(50), author VARCHAR(50), image VARCHAR(50), pages VARCHAR(50), country VARCHAR(50), price VARCHAR(50), url VARCHAR(100), PRIMARY KEY(id))';
@@ -53,7 +57,7 @@ const addBook = (req, res) => {
             pages: req.body.pages, 
             country: req.body.country, 
             price: req.body.price, 
-            url: req.body.url,  
+            url: req.body.url, 
 
         };
 
@@ -62,7 +66,7 @@ const addBook = (req, res) => {
         database.query(sqlQuery, subscriber, (err, row) => {
             if (err) throw err;
 
-            res.send('Add book successfully!');
+            res.json({message: "success"});
         });
     }
 };
@@ -110,8 +114,16 @@ const authorization = (req, res) => {
     database.query(sqlQuery, username, (err, result) => {
         if (err) throw err;
 
-        if (result.length === 1 && result.password === password){
-            res.json({message: "success"})
+        if (result.length === 1 && result[0].password === password){
+            let loginData = {
+                username, 
+                signInTime: Date.now(),
+            }
+
+            const token = jwt.sign(loginData, jwtSecretKet);
+            res.status(200).json({message: "success", token})
+        } else {
+            res.status(400).json({message: "fail"})
         }
     })
 }
@@ -133,6 +145,24 @@ const checkAccount = (req, res) => {
     })
 }
 
+const checkBook = (req, res) => {
+    const {author, title} = req.body;
+
+    const sqlQuery = "SELECT author FROM bookstore WHERE title = ? AND author = ?";
+
+
+    database.query(sqlQuery, title, author, (err, result) => {
+        if (err) throw err;
+
+        if (result.length === 0){
+            res.json({isExisted: false})
+        } else {
+            res.json({isExisted: true})
+        }
+
+    })
+}
+
 module.exports = {
     initDatabase,
     initTable,
@@ -141,5 +171,6 @@ module.exports = {
     initAccountSystem, 
     addAccount, 
     checkAccount, 
-    authorization
+    authorization, 
+    checkBook
 }

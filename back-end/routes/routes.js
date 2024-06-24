@@ -14,15 +14,14 @@ router.post("/add-account",
     body("password").not().isEmpty().escape(),
     controller.addAccount
 );
-router.get("/auth", 
+router.post("/auth", 
     body("username").not().isEmpty().escape(), 
     body("password").not().isEmpty().escape(),
     controller.authorization
 )
 
-
 router.get('/get-books', controller.getAllBooks);
-
+router.post('/check-book', controller.checkBook);
 router.post('/add-book', 
     body('title').not().isEmpty().escape(),
     body('author').not().isEmpty().escape(),

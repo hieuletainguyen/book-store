@@ -1,7 +1,19 @@
 import React from 'react';
 import { Nav, NavLink, Bars, NavMenu, NavBtn, NavBtnLink} from "./NavElement";
+import "../Signin.css"
 
 const NavBar = (props) => {
+
+    const handleLogout = () => {
+        localStorage.removeItem("user");
+        props.setIsLoggedIn({
+            ...props.isLoggedIn, 
+            status: false, 
+            username: "" 
+        })
+
+    }
+
     return (
         <>
             <Nav>
@@ -21,12 +33,23 @@ const NavBar = (props) => {
                         Sign Up
                     </NavLink>
                 }
+
+                {props.isLoggedIn.status && props.isLoggedIn.username === "admin" && 
+                    <NavLink to="/add-book">
+                        Add Book
+                    </NavLink>
+                }
                 </NavMenu>
 
                 <NavBtn>
-                    <NavBtnLink to="/signin">
-                        Sign In
-                    </NavBtnLink>
+                    {props.isLoggedIn.status ?
+                        <button className="buttonLoggedIn" onClick={handleLogout}>
+                            {props.isLoggedIn.username}
+                        </button> :
+                        <NavBtnLink to="/signin">
+                            Sign In
+                        </NavBtnLink>
+                    }
                 </NavBtn>
             </Nav>
         </>

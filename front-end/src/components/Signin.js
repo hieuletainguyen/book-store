@@ -7,7 +7,7 @@ function Signin (props) {
 
     const navigate = useNavigate();
 
-    const validate = async() => {
+    const validate = async () => {
         const response = await fetch("http://localhost:9898/auth", {
             method: "POST", 
             headers: {"Content-Type": "application/json"},
@@ -16,21 +16,32 @@ function Signin (props) {
 
         const data = await response.json();
         if (data.message === 'success') {
-            props.setIsLoggedIn(true);
+            localStorage.setItem("user", JSON.stringify({username, token: data.token}))
+            props.setIsLoggedIn({
+                ...props.isLoggedIn, 
+                status: true, 
+                username: username
+            });
+            
             navigate('/');
+        }  else if(data.message === "fail") {
+            window.alert("Incorrect password or username");
+
         }
     }
 
     const onButtonClick = () =>  {
         if ("" === username){
-            window.alert("You need to have a username");
+            window.alert("You need to enter the username");
             return;
         }
 
         if ("" === password) {
-            window.alert("You need to set password");
+            window.alert("You need to enter the password");
             return ;
         }
+
+        validate();
 
         
     }

@@ -3,13 +3,13 @@ import Cart from "./components/Cart";
 import NavBar from "./components/NavBar";
 import Home from "./components";
 import Signup from './components/Signup';
-import Signout from "./components/Signout";
 import Signin from "./components/Signin";
 import {
   BrowserRouter as Router, 
   Routes, 
   Route,
 } from "react-router-dom";
+import AddBook from "./components/AddBook";
 
 
 function App() {
@@ -80,8 +80,9 @@ function App() {
 
         <Route path="/signup" element={<Signup /> }/>;
 
-        <Route path="/signin" element={<Signin />} />
+        <Route path="/signin" element={<Signin isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>} />
 
+        {isLoggedIn.username === "admin" && <Route path="/add-book" element={<AddBook />} /> }
       </Routes>
     </Router>
   );
