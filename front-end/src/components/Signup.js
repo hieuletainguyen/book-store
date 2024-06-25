@@ -9,7 +9,7 @@ function Signup (props) {
     const navigate = useNavigate();
 
     const checkAccountExist = async() => {
-        const response = await fetch("http://localhost:9898/check-account", {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/check-account`, {
             method: "POST", 
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({username})
@@ -24,7 +24,7 @@ function Signup (props) {
     }
 
     const addAccount = async() => {
-        const result = await fetch("http://localhost:9898/add-account", {
+        const result = await fetch(`${process.env.REACT_APP_BACKEND_URL}/add-account`, {
             method: "POST", 
             headers: {
                 "Content-Type": "application/json",

@@ -45,7 +45,8 @@ function App() {
     const bookFetch = async() => {
       
       try {
-        const response = await fetch("http://localhost:9898/get-books");
+        // for testing local env: http://localhost:9898/get-books
+        const response = await fetch( `${process.env.REACT_APP_BACKEND_URL}/get-books`);
         const data = await response.json();
         const bookstore = data.bookstore;
         setProducts(shuffleArray(bookstore));

@@ -1,6 +1,7 @@
 
 import {useState } from "react";
 
+// to test the app locally, http://localhost:9898
 function AddBook (props) {
     const [title, setTitle] = useState("");
     const [author, setAuthor] = useState("");
@@ -10,8 +11,9 @@ function AddBook (props) {
     const [price, setPrice] = useState("");
     const [url, seUrl] = useState("");
 
+
     const checkBookExist = async () => {
-        const response = await fetch("http://localhost:9898/check-book", {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/check-book`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -38,7 +40,7 @@ function AddBook (props) {
     const handleSubmit = async () => {
         const ifBookExist = checkBookExist();
         if (ifBookExist === true) return;
-        const response = await fetch("http://localhost:9898/add-book", {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/add-book`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json", 
