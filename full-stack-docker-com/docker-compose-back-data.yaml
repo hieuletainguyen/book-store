@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  mysql-container:
+    image: mysql:8
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=mysql
+      - MYSQL_DATABASE=emails_db
+    ports:
+      - "3306:3306"
+    volumes:
+      - db:/var/lib/mysql
+      - ./mysql-init:/docker-entrypoint-initdb.d
+
+
+  app:
+    depends_on:
+      - mysql-container
+    build: ./back-end
+    restart: unless-stopped
+    ports:
+      - "9897:9897"
+    environment:
+      - DB_HOST=mysql-container
+      - DB_USER=root
+      - DB_PASSWORD=mysql 
+      - DB_NAME=emails_db
+    
+
+volumes: 
+  db:

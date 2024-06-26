@@ -27,8 +27,6 @@ const initDatabase = (req, res) => {
         res.send("Done initialize database!")
     });
 
-        
-    
 
 }
 

@@ -1,31 +1,27 @@
 version: '3.8'
 
 services:
-  mysql-container:
-    image: mysql:8
-    restart: unless-stopped
-    environment:
-      - MYSQL_ROOT_PASSWORD=mysql
-      - MYSQL_DATABASE=emails_db
+
+  backend: 
+    build: ./backend
     ports:
-      - "3306:3306"
+    - "9897:9897"
     volumes:
-      - db:/var/lib/mysql
+    - backend-data:/backend-app 
 
-
-  app:
-    depends_on:
-      - mysql-container
-    build: ./back-end
-    restart: unless-stopped
+  
+  frontend:
+    build: ./frontend
     ports:
-      - "9897:9897"
+    - "3000:3000"
     environment:
-      - DB_HOST=mysql-container
-      - DB_USER=root
-      - DB_PASSWORD=mysql 
-      - DB_NAME=emails_db
-    
+      - REACT_APP_BACKEND_URL=http://localhost:9897
+    volumes:
+    - frontend-data:/frontend-app
+    depends_on:
+      - backend
 
-volumes: 
-  db:
+volumes:
+  backend-data:
+  frontend-data:
+    
