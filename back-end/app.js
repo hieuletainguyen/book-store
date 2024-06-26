@@ -9,22 +9,15 @@ var corsOptions = {
     origin: process.env.CLIENT_ORIGIN || "http://localhost:3000"
 }
 
+
+
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(routes);
 
-// app.get("/init-table", controller.initTable);
 
-// app.get("/init-database", controller.initDatabase);
-
-// app.get('/get-books', controller.getAllBooks);
-
-// app.post('/add-book', (req, res) => {
-
-// })
-
-app.listen(9898, () => {
-    console.log('Server running!');
+app.listen(9897, () => {
+    console.log(`Express app listening at http://localhost:9897`);
 });
 
 module.exports = app;

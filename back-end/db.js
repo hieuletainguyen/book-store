@@ -1,13 +1,12 @@
-const mysql = require('mysql');
+const mysql = require('mysql2');
 
 require('dotenv').config();
 
 const database = mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_NAME,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-    port: process.env.DB_PORT
+    user: process.env.DB_USER || 'root',
+    password: process.env.DB_PASSWORD || 'mysql',
+    database: process.env.DB_NAME || 'emails_db',
+    host: process.env.DB_HOST || 'mysql-container',
 });
 
 module.exports = database;

@@ -4,7 +4,6 @@ const data = require("../data/products");
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcrypt")
 
-const jwtSecretKet = "tatsuyahirano"
 
 const initTable = (req, res) => {
     const sqlQuery =  'CREATE TABLE IF NOT EXISTS bookstore(id int AUTO_INCREMENT, title VARCHAR(50), author VARCHAR(50), image VARCHAR(50), pages VARCHAR(50), country VARCHAR(50), price VARCHAR(50), url VARCHAR(100), PRIMARY KEY(id))';
