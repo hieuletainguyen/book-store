@@ -1,4 +1,4 @@
-# Book store project
+# Book Store App
 
 This is my first project using MySQL + Express Js + React JS + Node Js + Dockerfile + Docker compose to create a book store with these features:
 
