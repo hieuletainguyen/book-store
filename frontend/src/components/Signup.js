@@ -2,7 +2,7 @@ import {useState} from 'react';
 import "./Signin.css";
 import {  useNavigate } from 'react-router-dom';
 
-function Signup (props) {
+function Signup () {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 

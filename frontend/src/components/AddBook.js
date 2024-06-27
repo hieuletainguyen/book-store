@@ -1,8 +1,7 @@
 
 import {useState } from "react";
 
-// to test the app locally, http://localhost:9898
-function AddBook (props) {
+function AddBook () {
     const [title, setTitle] = useState("");
     const [author, setAuthor] = useState("");
     const [image, setImage] = useState("");

@@ -1,6 +1,7 @@
 
 USE emails_db
 
+
 CREATE TABLE IF NOT EXISTS bookstore(
     id int AUTO_INCREMENT, 
     title VARCHAR(50), 

@@ -1,16 +1,12 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
-// const controller = require('/controllers/controllers');
-// const { body } = require('express-validator');
 const routes = require('./routes/routes');
 
 var corsOptions = {
     origin:  "*" ,
     optionsSuccessStatus: 204
 }
-
-
 
 app.use(cors(corsOptions));
 app.use(express.json());
