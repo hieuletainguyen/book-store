@@ -4,6 +4,7 @@ const data = require("../data/products");
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcrypt")
 
+const jwtSecretKet = "qewrty1234"
 
 const initTable = (req, res) => {
     const sqlQuery =  'CREATE TABLE IF NOT EXISTS bookstore(id int AUTO_INCREMENT, title VARCHAR(50), author VARCHAR(50), image VARCHAR(50), pages VARCHAR(50), country VARCHAR(50), price VARCHAR(50), url VARCHAR(100), PRIMARY KEY(id))';
@@ -148,7 +149,7 @@ const checkBook = (req, res) => {
     const sqlQuery = "SELECT author FROM bookstore WHERE title = ? AND author = ?";
 
 
-    database.query(sqlQuery, title, author, (err, result) => {
+    database.query(sqlQuery, [title, author], (err, result) => {
         if (err) throw err;
 
         if (result.length === 0){

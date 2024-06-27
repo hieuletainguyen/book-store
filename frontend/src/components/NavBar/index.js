@@ -1,8 +1,11 @@
 import React from 'react';
 import { Nav, NavLink, Bars, NavMenu, NavBtn, NavBtnLink} from "./NavElement";
 import "../Signin.css"
+import { useNavigate } from 'react-router-dom';
 
 const NavBar = (props) => {
+
+    const navigate = useNavigate();
 
     const handleLogout = () => {
         localStorage.removeItem("user");
@@ -11,6 +14,7 @@ const NavBar = (props) => {
             status: false, 
             username: "" 
         })
+        navigate('/');
 
     }
 

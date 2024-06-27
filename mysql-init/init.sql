@@ -1,5 +1,5 @@
 
-    USE emails_db
+USE emails_db
 
 CREATE TABLE IF NOT EXISTS bookstore(
     id int AUTO_INCREMENT, 
@@ -314,3 +314,14 @@ INSERT INTO bookstore (title, author, image, pages, country, price, url) VALUES
 ("Memoirs of Hadrian","Marguerite Yourcenar",
     "", "408", "France/Belgium", "5",
     "https://en.wikipedia.org/wiki/Memoirs_of_Hadrian");
+
+
+CREATE TABLE IF NOT EXISTS accounts (id INT AUTO_INCREMENT, 
+    username VARCHAR(50), 
+    password VARCHAR(100), 
+    PRIMARY KEY(id)
+);
+
+INSERT INTO accounts (username, password) VALUES 
+    ("admin", "imadmin"),
+    ("user", "imauser");

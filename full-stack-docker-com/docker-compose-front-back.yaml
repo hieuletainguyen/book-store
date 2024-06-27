@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+
+  backend: 
+    build: ./backend
+    ports:
+    - "9897:9897"
+    volumes:
+    - backend-data:/backend-app
+
+  
+  frontend:
+    build: 
+      context: ./frontend
+    ports:
+    - "3000:3000"
+    environment:
+      - REACT_APP_BACKEND_URL=http://localhost:9897
+    volumes:
+    - frontend-data:/frontend-app
+    depends_on:
+      - backend
+
+volumes:
+  backend-data:
+  frontend-data:
+    

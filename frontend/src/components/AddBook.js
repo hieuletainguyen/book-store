@@ -12,8 +12,9 @@ function AddBook (props) {
     const [url, seUrl] = useState("");
 
 
-    const checkBookExist = async () => {
-        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/check-book`, {
+    const handleSubmit = async () => {
+        
+        const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/check-book`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -21,9 +22,9 @@ function AddBook (props) {
             body: JSON.stringify({author, title})
         }); 
 
-        const data = await response.json();
+        const res_json = await res.json();
 
-        if (data.isExisted === true){
+        if (res_json.isExisted === true){
             window.alert("Book already exist");
             setTitle("");
             setAuthor("");
@@ -32,14 +33,8 @@ function AddBook (props) {
             setCountry("");
             setPrice("");
             seUrl("");
-            return true;
+            return;
         }
-        return false;
-    }
-
-    const handleSubmit = async () => {
-        const ifBookExist = checkBookExist();
-        if (ifBookExist === true) return;
         const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/add-book`, {
             method: "POST",
             headers: {

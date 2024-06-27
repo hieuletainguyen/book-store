@@ -8,21 +8,6 @@ function Signup (props) {
 
     const navigate = useNavigate();
 
-    const checkAccountExist = async() => {
-        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/check-account`, {
-            method: "POST", 
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({username})
-        })
-
-        const data = await response.json();
-        if (data.isExisted) {
-            window.alert("Account already exists");
-            return true;
-        }
-        return false;
-    }
-
     const addAccount = async() => {
         const result = await fetch(`${process.env.REACT_APP_BACKEND_URL}/add-account`, {
             method: "POST", 
@@ -42,7 +27,7 @@ function Signup (props) {
         }
     }
 
-    const onButtonClick = () => {
+    const onButtonClick = async() => {
 
         if ("" === username){
             window.alert("You need to have a username");
@@ -59,14 +44,19 @@ function Signup (props) {
             return;
         }
 
-        const accountExist = checkAccountExist();
-        if (accountExist === true){
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/check-account`, {
+            method: "POST", 
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({username})
+        })
+
+        const data = await response.json();
+        if (data.isExisted) {
+            window.alert("Account already exists");
             setUsername("");
             setPassword("");
             return;
         }
-        console.log('here');
-        
         addAccount();
     }
 

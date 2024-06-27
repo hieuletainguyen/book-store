@@ -21,7 +21,12 @@ router.post("/auth",
 )
 
 router.get('/get-books', controller.getAllBooks);
-router.post('/check-book', controller.checkBook);
+
+router.post('/check-book', 
+    body("author").not().isEmpty().escape(),
+    body("title").not().isEmpty().escape(),
+    controller.checkBook);
+
 router.post('/add-book', 
     body('title').not().isEmpty().escape(),
     body('author').not().isEmpty().escape(),
