@@ -1,6 +1,6 @@
 # Book store project
 
-This is my first project using MySQL + Express Js + React JS + Node Js (MERN) + Dockerfile + Docker compose to create a book store with these features:
+This is my first project using MySQL + Express Js + React JS + Node Js + Dockerfile + Docker compose to create a book store with these features:
 
 - login/logout/sign-up
 - Add book if you are an admin
