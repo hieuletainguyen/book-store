@@ -16,7 +16,7 @@ The database will be run on port 3306.
 
 I have created docker compose to test the connection of the backend to database and frontend to backend separately. 
 
-In order to test the connection of the backend to the database, I used postman to send the url.
+In order to test the connection of the backend to the database, I used postman to send the request.
 
 
 
