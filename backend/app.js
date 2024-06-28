@@ -3,6 +3,8 @@ const app = express();
 const cors = require('cors');
 const routes = require('./routes/routes');
 
+const port = 9897;
+
 var corsOptions = {
     origin:  "*" ,
     optionsSuccessStatus: 204
@@ -13,8 +15,8 @@ app.use(express.json());
 app.use(routes);
 
 
-app.listen(9897, () => {
-    console.log(`Express app listening at http://localhost:9897`);
+app.listen(port, () => {
+    console.log(`Express app listening at http://localhost:${port}`);
 });
 
 module.exports = app;

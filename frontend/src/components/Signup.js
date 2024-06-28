@@ -24,6 +24,10 @@ function Signup () {
             setUsername("");
             setPassword("");
             navigate("/");
+        } else if (data.message === "username already exists") {
+            window.alert("Account already exists");
+            setUsername("");
+            setPassword("");
         }
     }
 
@@ -44,19 +48,19 @@ function Signup () {
             return;
         }
 
-        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/check-account`, {
-            method: "POST", 
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({username})
-        })
+        // const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/check-account`, {
+        //     method: "POST", 
+        //     headers: {"Content-Type": "application/json"},
+        //     body: JSON.stringify({username})
+        // })
 
-        const data = await response.json();
-        if (data.isExisted) {
-            window.alert("Account already exists");
-            setUsername("");
-            setPassword("");
-            return;
-        }
+        // const data = await response.json();
+        // if (data.isExisted) {
+        //     window.alert("Account already exists");
+        //     setUsername("");
+        //     setPassword("");
+        //     return;
+        // }
         addAccount();
     }
 

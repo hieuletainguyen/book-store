@@ -1,5 +1,6 @@
+CREATE DATABASE IF NOT EXISTS bookstores;
 
-USE emails_db
+USE bookstores;
 
 
 CREATE TABLE IF NOT EXISTS bookstore(
