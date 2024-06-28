@@ -2,11 +2,10 @@ const { validationResult } = require('express-validator');
 const database = require('../db');
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const secret_data = require("../secret-data");
 
-
-const saltRounds = 10;
-const jwtSecretKet = "qewrty1234"
-const salt = bcrypt.genSalt(saltRounds);
+const jwtSecretKet = secret_data.jwtsecretkey;
+const salt = secret_data.salt;
 
 const addAccount = (req, res) => {
     const errors = validationResult(req);

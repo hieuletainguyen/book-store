@@ -13,27 +13,7 @@ function AddBook () {
 
     const handleSubmit = async () => {
         
-        const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/check-book`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({author, title})
-        }); 
-
-        const res_json = await res.json();
-
-        if (res_json.isExisted === true){
-            window.alert("Book already exist");
-            setTitle("");
-            setAuthor("");
-            setImage("");
-            setPages("");
-            setCountry("");
-            setPrice("");
-            seUrl("");
-            return;
-        }
+        
         const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/add-book`, {
             method: "POST",
             headers: {
@@ -44,6 +24,15 @@ function AddBook () {
 
         const data = await response.json();
         if (data.message === "success"){
+            setTitle("");
+            setAuthor("");
+            setImage("");
+            setPages("");
+            setCountry("");
+            setPrice("");
+            seUrl("");
+        } else if (data.message === "Book is already existed") {
+            window.alert("Book already exist");
             setTitle("");
             setAuthor("");
             setImage("");

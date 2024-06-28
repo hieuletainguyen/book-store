@@ -9,13 +9,13 @@ services:
     restart: unless-stopped
     ports:
       - "9897:9897"
-    volumes:
-      - backend-data:/backend-app
+    # volumes:
+    #   - backend-data:/backend-app
     environment:
       - DB_HOST=mysql-container
       - DB_USER=root
       - DB_PASSWORD=mysql
-      - DB_NAME=emails_db
+      - DB_NAME=bookstores
 
 
 
@@ -27,8 +27,8 @@ services:
       args:
         - REACT_APP_BACKEND_URL=http://127.0.0.1:9897
         
-    volumes:
-      - frontend-data:/frontend-app
+    # volumes:
+    #   - frontend-data:/frontend-app
     ports:
       - "3000:3000"
 
@@ -43,10 +43,10 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - db:/var/lib/mysql
+      # - db:/var/lib/mysql
       - ./mysql-init:/docker-entrypoint-initdb.d
 
-volumes: 
-  db:
-  backend-data:
-  frontend-data:
+# volumes: 
+#   db:
+#   backend-data:
+#   frontend-data:

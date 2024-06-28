@@ -45,7 +45,6 @@ function App() {
     const bookFetch = async() => {
       
       try {
-        // for testing local env: http://localhost:9898/get-books
         const response = await fetch( `${process.env.REACT_APP_BACKEND_URL}/get-books`);
         const data = await response.json();
         const bookstore = data.bookstore;
