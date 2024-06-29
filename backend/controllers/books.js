@@ -36,7 +36,11 @@ const checkBook = (req, res) => {
 
 const addBook = (req, res) => {
     const errors = validationResult(req);
-    const {title, author, image, pages, country, price, url} = req.body;
+    const {username, status, title, author, image, pages, country, price, url} = req.body;
+
+    if (username !== "admin" || status !== true) {
+        return res.send({message: "You need to be an admin to add book"});
+    } 
 
     if (errors.array().length > 0) {
         res.send(errors.array());

@@ -1,7 +1,7 @@
 
 import {useState } from "react";
 
-function AddBook () {
+function AddBook (props) {
     const [title, setTitle] = useState("");
     const [author, setAuthor] = useState("");
     const [image, setImage] = useState("");
@@ -9,17 +9,18 @@ function AddBook () {
     const [country, setCountry] = useState("");
     const [price, setPrice] = useState("");
     const [url, seUrl] = useState("");
+    const username = props.username;
+    const status = props.status;
 
 
     const handleSubmit = async () => {
-        
         
         const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/add-book`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json", 
             }, 
-            body: JSON.stringify({title, author, image, pages, country, price, url})
+            body: JSON.stringify({username, status, title, author, image, pages, country, price, url})
         });
 
         const data = await response.json();

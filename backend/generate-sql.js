@@ -5,7 +5,9 @@ const data = require("./data/products");
 const sqlStatement = [];
 
 sqlStatement.push(`
-    USE emails_db
+CREATE DATABASE IF NOT EXISTS bookstores;
+
+USE bookstores;
 
 CREATE TABLE IF NOT EXISTS bookstore(
     id int AUTO_INCREMENT, 
@@ -26,6 +28,17 @@ const insertStatement = data.map(book => `("${book.title}","${book.author}",
 
 sqlStatement.push(`INSERT INTO bookstore (title, author, image, pages, country, price, url) VALUES 
     ${insertStatement.join(',\n')};`)
+
+sqlStatement.push(`
+CREATE TABLE IF NOT EXISTS accounts (id INT AUTO_INCREMENT, 
+    username VARCHAR(50), 
+    password VARCHAR(100), 
+    PRIMARY KEY(id)
+);
+
+INSERT INTO accounts (username, password) VALUES 
+    ("admin", "imadmin"),
+    ("user", "imauser");`)
 
 fs.writeFileSync('../mysql-init/init.sql', sqlStatement.join('\n'), 'utf8');
 

@@ -82,7 +82,7 @@ function App() {
 
         <Route path="/signin" element={<Signin isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>} />
 
-        {isLoggedIn.username === "admin" && <Route path="/add-book" element={<AddBook />} /> }
+        {isLoggedIn.username === "admin" && <Route path="/add-book" element={<AddBook isLoggedIn={isLoggedIn}/>} /> }
       </Routes>
     </Router>
   );
