@@ -24,7 +24,7 @@ const addAccount = (req, res) => {
 
         const unique = "SELECT distinct(username) FROM accounts WHERE username = ?";
 
-        database.query(unique, username, (err, result) => {
+        database.execute(unique, [username], (err, result) => {
             if (err) throw err;
 
             if (result.length > 0){
@@ -35,7 +35,7 @@ const addAccount = (req, res) => {
 
         const sqlQuery = 'INSERT INTO accounts SET ?';
 
-        database.query(sqlQuery, account, (err, row) => {
+        database.execute(sqlQuery, [account], (err, row) => {
             if (err) throw err;
 
             res.send({message: "success"});
@@ -50,7 +50,7 @@ const authorization = (req, res) => {
 
     const sqlQuery = "SELECT * FROM accounts WHERE username = ?";
 
-    database.query(sqlQuery, username, (err, result) => {
+    database.execute(sqlQuery, [username], (err, result) => {
         if (err) throw err;
 
         if (result.length === 1 && bcrypt.compare(result[0].password, password)){
@@ -72,7 +72,7 @@ const checkAccount = (req, res) => {
 
     const sqlQuery = "SELECT * FROM accounts WHERE username = ?";
 
-    database.query(sqlQuery, username, (err, result) => {
+    database.execute(sqlQuery, [username], (err, result) => {
         if (err) throw err;
 
         if (result.length === 0){
