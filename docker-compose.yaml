@@ -39,7 +39,7 @@ services:
     restart: unless-stopped
     environment:
       - MYSQL_ROOT_PASSWORD=mysql
-      - MYSQL_DATABASE=emails_db
+      - MYSQL_DATABASE=bookstores
     ports:
       - "3306:3306"
     volumes:
