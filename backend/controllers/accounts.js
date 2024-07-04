@@ -11,39 +11,38 @@ const addAccount = async (req, res) => {
         res.send(errors.array());
     } else {
 
-       
-            const {username, password} = req.body;
+        const {username, password} = req.body;
+        const salt = await generate_salt();
+        const hash_password = await bcrypt.hash(password, salt);
 
-            const salt = await generate_salt();
-            
-            const hash_password = await bcrypt.hash(password, salt);
+        const account = {
+            username: username,
+            password: hash_password
+        }
 
-            const account = {
-                username: username,
-                password: hash_password
+        const unique = "SELECT distinct(username) FROM accounts WHERE username = ?";
+        const result = database.query(unique, username, (err, result) => {
+            if (err) {
+                return res.status(500).send({message: "Server Error"});
+            };
+
+            if (result.length > 0){
+                return res.send({message: "username already exists"});
+                
+            } else {
+
+                const sqlQuery = 'INSERT INTO accounts SET ?';
+
+                database.query(sqlQuery, account, (err, row) => {
+                    if (err) {
+                        return res.status(500).send({message: "Server Error"});
+                    };
+
+                    res.send({message: "success"});
+                });
             }
 
-            const unique = "SELECT distinct(username) FROM accounts WHERE username = ?";
-            database.query(unique, username, (err, result) => {
-                if (err) throw err;
-
-                if (result.length > 0){
-                    return res.send({message: "username already exists"});
-                    
-                }
-            })
-
-            const sqlQuery = 'INSERT INTO accounts SET ?';
-
-            database.query(sqlQuery, account, (err, row) => {
-                if (err) throw err;
-
-                res.send({message: "success"});
-            });
-
-        
-
-
+        })
     }
 };
 
