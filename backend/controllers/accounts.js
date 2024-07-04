@@ -21,7 +21,7 @@ const addAccount = async (req, res) => {
         }
 
         const unique = "SELECT distinct(username) FROM accounts WHERE username = ?";
-        const result = database.query(unique, username, (err, result) => {
+        database.query(unique, username, (err, result) => {
             if (err) {
                 return res.status(500).send({message: "Server Error"});
             };
@@ -51,26 +51,35 @@ const authorization = async (req, res) => {
 
     const sqlQuery = "SELECT * FROM accounts WHERE username = ?";
 
-    const result = database.query(sqlQuery, [username]);
-    if (result.length === 1){
+    database.query(sqlQuery, [username], async (err, result) => {
+        if (err) {
+            return res.status(500).send({message: "Server Error"});
+        };
 
-        const hashedPassword = result[0].password;
+        if (result.length === 1){
 
-        const match = await bcrypt.compare(hashedPassword, password);
-
-        if (match)   {
-                let loginData = {
-                username, 
-                signInTime: Date.now(),
+            const hashedPassword = result[0].password;
+    
+            const match = await bcrypt.compare(hashedPassword, password);
+    
+            if (match)   {
+                    let loginData = {
+                    username, 
+                    signInTime: Date.now(),
+                }
+    
+                const token = jwt.sign(loginData, jwtSecretKet);
+                res.status(200).json({message: "success", token})
+            } else {
+                res.status(401).json({message: "Invalid username or password"});
             }
-
-            const token = jwt.sign(loginData, jwtSecretKet);
-            res.status(200).json({message: "success", token})
+    
+        } else {
+            res.status(401).json({message: "fail"})
         }
 
-    } else {
-        res.status(400).json({message: "fail"})
-    }
+    });
+    
     
 };
 

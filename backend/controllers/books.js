@@ -53,27 +53,28 @@ const addBook = (req, res) => {
 
             if (result.length > 0) {
                 return res.send({message: "Book is already existed"})
+            } else {
+
+                const subscriber = {
+                    title: title, 
+                    author: author, 
+                    image: image, 
+                    pages: pages, 
+                    country: country, 
+                    price: price, 
+                    url: url, 
+        
+                };
+        
+                const sqlQuery = 'INSERT INTO bookstore SET ?';
+        
+                database.query(sqlQuery, subscriber, (err, row) => {
+                    if (err) throw err;
+        
+                    res.json({message: "success"});
+                });
             }
         })
-
-        const subscriber = {
-            title: title, 
-            author: author, 
-            image: image, 
-            pages: pages, 
-            country: country, 
-            price: price, 
-            url: url, 
-
-        };
-
-        const sqlQuery = 'INSERT INTO bookstore SET ?';
-
-        database.query(sqlQuery, subscriber, (err, row) => {
-            if (err) throw err;
-
-            res.json({message: "success"});
-        });
     }
 };
 
