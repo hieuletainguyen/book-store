@@ -3,14 +3,15 @@ const app = express();
 const cors = require('cors');
 const book_routes = require("./routes/book_routes");
 const account_routes = require("./routes/account_routes")
-
+const cookieParser = require('cookie-parser');
 const port = 9897;
 
 var corsOptions = {
     origin:  "*" ,
-    optionsSuccessStatus: 204
+    optionsSuccessStatus: 204,
+    credentials: true
 }
-
+app.use(cookieParser());
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(book_routes);

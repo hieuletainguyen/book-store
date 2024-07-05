@@ -3,7 +3,6 @@ const database = require('../db');
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const {jwtSecretkey, generate_salt} = require("../secret-data");
-const cookieParser = require("cookie-parser");
 
 
 
