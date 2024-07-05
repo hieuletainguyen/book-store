@@ -38,7 +38,15 @@ CREATE TABLE IF NOT EXISTS accounts (id INT AUTO_INCREMENT,
 
 INSERT INTO accounts (username, password) VALUES 
     ("admin", "imadmin"),
-    ("user", "imauser");`)
+    ("user", "imauser");
+    
+CREATE TABLE IF NOT EXISTS tokens (id INT AUTO_INCREMENT, 
+    username VARCHAR(50),
+    token VARCHAR(100),
+    PRIMARY KEY(id)
+);
+
+`)
 
 fs.writeFileSync('../mysql-init/init.sql', sqlStatement.join('\n'), 'utf8');
 

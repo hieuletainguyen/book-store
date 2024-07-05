@@ -4,17 +4,26 @@ import "../Signin.css"
 import { useNavigate } from 'react-router-dom';
 
 const NavBar = (props) => {
-
+    const username = props.isLoggedIn.username;
     const navigate = useNavigate();
 
-    const handleLogout = () => {
-        localStorage.removeItem("user");
-        props.setIsLoggedIn({
-            ...props.isLoggedIn, 
-            status: false, 
-            username: "" 
+    const handleLogout = async () => {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/logout`, {
+            method: "POST", 
+            credentials: 'include',
+            headers: {'Content-Type': "application/json"}, 
+            body: JSON.stringify({username: username})           
         })
-        navigate('/');
+
+        if (response.ok) {
+            console.log(response.message)
+            props.setIsLoggedIn({
+                ...props.isLoggedIn, 
+                status: false, 
+                username: "" 
+            })
+            navigate('/');
+        }
 
     }
 

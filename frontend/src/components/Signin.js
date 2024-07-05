@@ -16,7 +16,6 @@ function Signin (props) {
 
         const data = await response.json();
         if (data.message === 'success') {
-            localStorage.setItem("user", JSON.stringify({username, token: data.token}))
             props.setIsLoggedIn({
                 ...props.isLoggedIn, 
                 status: true, 

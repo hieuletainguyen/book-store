@@ -2,7 +2,10 @@ const { validationResult } = require('express-validator');
 const database = require('../db');
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const {jwtsecretkey, generate_salt} = require("../secret-data");
+const {jwtSecretkey, generate_salt} = require("../secret-data");
+const cookieParser = require("cookie-parser");
+
+
 
 const addAccount = async (req, res) => {
     const errors = validationResult(req);
@@ -60,16 +63,25 @@ const authorization = async (req, res) => {
 
             const hashedPassword = result[0].password;
     
-            const match = await bcrypt.compare(hashedPassword, password);
+            const match = await bcrypt.compare(password, hashedPassword);
     
             if (match)   {
-                    let loginData = {
-                    username, 
-                    signInTime: Date.now(),
+            
+                const token = jwt.sign({username: username}, jwtSecretkey, {expiresIn: "1h"});
+                const query = `INSERT INTO tokens SET ?`;
+                const value = {
+                    token: token,
+                    username: username
                 }
-    
-                const token = jwt.sign(loginData, jwtSecretKet);
-                res.status(200).json({message: "success", token})
+                database.query(query, value, (err, result) => {
+                    if (err) {
+                        return res.status(500).send({message: "Server Error"});
+                    };
+
+                })
+
+                res.cookie("token", token, {httpOnly: true, secure: true});
+                res.status(200).json({message: "success", token: token})
             } else {
                 res.status(401).json({message: "Invalid username or password"});
             }
@@ -80,8 +92,24 @@ const authorization = async (req, res) => {
 
     });
     
-    
 };
+
+const logout = (req, res) => {
+    const {username} = req.body;
+    const token = req.cookie.token;
+
+    if (token) {
+        const query = `DELETE FROM tokens WHERE token = ? AND username = ?`;
+        database.query(query, [token, username], (err, result) => {
+            if (err) {
+                return res.status(500).send({message: "Server Error"});
+            };
+        });
+        res.clearCookie("token");
+        res.status(200).json({message: "Logged out successfully"});
+    }
+    
+}
 
 const checkAccount = (req, res) => {
     const {username} = req.body;
@@ -104,5 +132,6 @@ const checkAccount = (req, res) => {
 module.exports = {
     checkAccount,
     authorization,
-    addAccount
+    addAccount, 
+    logout
 }

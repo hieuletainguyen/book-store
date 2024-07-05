@@ -15,6 +15,10 @@ router.post("/auth",
     body("password").not().isEmpty().escape(),
     controller.authorization
 )
+router.post('/logout',
+    body("username").not().isEmpty().escape(), 
+    controller.logout
+)
 
 
 

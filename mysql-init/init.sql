@@ -1,7 +1,7 @@
+
 CREATE DATABASE IF NOT EXISTS bookstores;
 
 USE bookstores;
-
 
 CREATE TABLE IF NOT EXISTS bookstore(
     id int AUTO_INCREMENT, 
@@ -317,7 +317,6 @@ INSERT INTO bookstore (title, author, image, pages, country, price, url) VALUES
     "", "408", "France/Belgium", "5",
     "https://en.wikipedia.org/wiki/Memoirs_of_Hadrian");
 
-
 CREATE TABLE IF NOT EXISTS accounts (id INT AUTO_INCREMENT, 
     username VARCHAR(50), 
     password VARCHAR(100), 
@@ -327,3 +326,10 @@ CREATE TABLE IF NOT EXISTS accounts (id INT AUTO_INCREMENT,
 INSERT INTO accounts (username, password) VALUES 
     ("admin", "imadmin"),
     ("user", "imauser");
+    
+CREATE TABLE IF NOT EXISTS tokens (id INT AUTO_INCREMENT, 
+    username VARCHAR(50),
+    token VARCHAR(100),
+    PRIMARY KEY(id)
+);
+

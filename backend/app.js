@@ -13,7 +13,6 @@ var corsOptions = {
 
 app.use(cors(corsOptions));
 app.use(express.json());
-app.use(routes);
 app.use(book_routes);
 app.use(account_routes);
 
