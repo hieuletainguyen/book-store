@@ -67,26 +67,22 @@ const authorization = async (req, res) => {
             if (match)   {
             
                 const token = jwt.sign({username: username}, jwtSecretkey, {expiresIn: "1h"});
-                const query = `INSERT INTO tokens SET ?`;
-                const value = {
-                    token: token,
-                    username: username
-                }
-                database.query(query, value, (err, result) => {
-                    if (err) {
-                        return res.status(500).send({message: "Server Error"});
-                    };
+
+                const query1 = "INSERT INTO tokens (username, token) VALUES (?, ?)";
+
+                database.query(query1 , [username, token], (err, result) => {
+                    if (err) throw err;
+
+                    res.status(200).json({message: "success", token: token})
 
                 })
 
-                res.cookie("token", token, {httpOnly: true, secure: true});
-                res.status(200).json({message: "success", token: token})
             } else {
                 res.status(401).json({message: "Invalid username or password"});
             }
     
         } else {
-            res.status(401).json({message: "fail"})
+            res.status(401).json({message: "Invalid username or password"})
         }
 
     });
@@ -94,17 +90,16 @@ const authorization = async (req, res) => {
 };
 
 const logout = (req, res) => {
-    const {username} = req.body;
-    const token = req.cookie.token;
+    const {username, token} = req.body;
 
     if (token) {
-        const query = `DELETE FROM tokens WHERE token = ? AND username = ?`;
+        const query = "DELETE FROM tokens WHERE token = ? AND username = ?";
         database.query(query, [token, username], (err, result) => {
             if (err) {
                 return res.status(500).send({message: "Server Error"});
             };
         });
-        res.clearCookie("token");
+        res.clearCookie(username);
         res.status(200).json({message: "Logged out successfully"});
     }
     

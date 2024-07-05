@@ -1,6 +1,7 @@
 import {useState} from "react";
 import "./Signin.css";
 import {useNavigate} from "react-router-dom";
+import Cookies from "js-cookie";
 function Signin (props) {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -10,6 +11,7 @@ function Signin (props) {
     const validate = async () => {
         const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/auth`, {
             method: "POST", 
+            credentials: "include",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({username, password})
         })
@@ -21,9 +23,12 @@ function Signin (props) {
                 status: true, 
                 username: username
             });
+            Cookies.set(username, data.token, {expires: 1});
+            const cookieValue = Cookies.get();
+            console.log(cookieValue);
             
             navigate('/');
-        }  else if(data.message === "fail") {
+        }  else if(data.message === "Invalid username or password") {
             window.alert("Incorrect password or username");
 
         }

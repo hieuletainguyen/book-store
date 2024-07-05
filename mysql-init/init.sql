@@ -319,7 +319,7 @@ INSERT INTO bookstore (title, author, image, pages, country, price, url) VALUES
 
 CREATE TABLE IF NOT EXISTS accounts (id INT AUTO_INCREMENT, 
     username VARCHAR(50), 
-    password VARCHAR(100), 
+    password VARCHAR(500), 
     PRIMARY KEY(id)
 );
 
@@ -329,7 +329,7 @@ INSERT INTO accounts (username, password) VALUES
     
 CREATE TABLE IF NOT EXISTS tokens (id INT AUTO_INCREMENT, 
     username VARCHAR(50),
-    token VARCHAR(100),
+    token VARCHAR(5000),
     PRIMARY KEY(id)
 );
 

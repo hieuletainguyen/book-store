@@ -2,6 +2,7 @@ import React from 'react';
 import { Nav, NavLink, Bars, NavMenu, NavBtn, NavBtnLink} from "./NavElement";
 import "../Signin.css"
 import { useNavigate } from 'react-router-dom';
+import Cookies from "js-cookie";
 
 const NavBar = (props) => {
     const username = props.isLoggedIn.username;
@@ -12,8 +13,9 @@ const NavBar = (props) => {
             method: "POST", 
             credentials: 'include',
             headers: {'Content-Type': "application/json"}, 
-            body: JSON.stringify({username: username})           
+            body: JSON.stringify({username: username, token: Cookies.get(username)})           
         })
+        Cookies.remove(username);
 
         if (response.ok) {
             console.log(response.message)
