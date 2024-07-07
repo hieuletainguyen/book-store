@@ -1,4 +1,18 @@
 const fs = require('fs');
+const bcrypt  = require("bcrypt");
+const { admin_password, generate_salt} = require("./secret-data");
+
+let hash_admin_password;
+const AdminPassword = async () => {
+    const salt = await generate_salt();
+    const hashAdminPassword = await bcrypt.hash(admin_password, salt);
+    return hashAdminPassword
+}
+
+AdminPassword().
+    then((hashedPassword) => {
+        hash_admin_password = hashedPassword;
+    })
 
 const data = require("./data/products");
 
@@ -32,17 +46,14 @@ sqlStatement.push(`INSERT INTO bookstore (title, author, image, pages, country, 
 sqlStatement.push(`
 CREATE TABLE IF NOT EXISTS accounts (id INT AUTO_INCREMENT, 
     username VARCHAR(50), 
-    password VARCHAR(100), 
+    password VARCHAR(500), 
     PRIMARY KEY(id)
 );
 
-INSERT INTO accounts (username, password) VALUES 
-    ("admin", "imadmin"),
-    ("user", "imauser");
     
 CREATE TABLE IF NOT EXISTS tokens (id INT AUTO_INCREMENT, 
     username VARCHAR(50),
-    token VARCHAR(100),
+    token VARCHAR(500),
     PRIMARY KEY(id)
 );
 
@@ -51,3 +62,8 @@ CREATE TABLE IF NOT EXISTS tokens (id INT AUTO_INCREMENT,
 fs.writeFileSync('../mysql-init/init.sql', sqlStatement.join('\n'), 'utf8');
 
 console.log('SQL Script generated done!')
+
+
+
+// INSERT INTO accounts (username, password) VALUES 
+//     ("admin", ${hash_admin_password});

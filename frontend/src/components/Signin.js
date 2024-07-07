@@ -23,7 +23,7 @@ function Signin (props) {
                 status: true, 
                 username: username
             });
-            Cookies.set(username, data.token, {expires: 1});
+            Cookies.set("BOOKSTORES_TOKEN", data.token, {expires: 1});
             const cookieValue = Cookies.get();
             console.log(cookieValue);
             

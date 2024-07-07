@@ -73,7 +73,9 @@ const authorization = async (req, res) => {
                 database.query(query1 , [username, token], (err, result) => {
                     if (err) throw err;
 
+                    // res.cookie("BOOKSTORES_TOKEN", token, {maxAge: 900000});
                     res.status(200).json({message: "success", token: token})
+                    
 
                 })
 
@@ -87,6 +89,19 @@ const authorization = async (req, res) => {
 
     });
     
+};
+
+const decode_token = (req, res) => {
+    const {token} = req.body;
+    if (token) {
+        jwt.verify(token, jwtSecretkey, (err, decoded) => {
+            if (err) {
+                res.status(401).json({message: "Invalid token"})
+            } else {
+                res.status(200).json({message: "success", username: decoded.username})
+            }
+        })
+    }
 };
 
 const logout = (req, res) => {
@@ -127,5 +142,6 @@ module.exports = {
     checkAccount,
     authorization,
     addAccount, 
-    logout
+    logout, 
+    decode_token
 }

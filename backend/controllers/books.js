@@ -1,5 +1,7 @@
 const { validationResult } = require('express-validator');
 const database = require('../db');
+const jwt = require("jsonwebtoken");
+const {jwtSecretkey} = require("../secret-data");
 
 
 const getAllBooks = (req, res) => {
@@ -36,10 +38,12 @@ const checkBook = (req, res) => {
 
 const addBook = (req, res) => {
     const errors = validationResult(req);
-    const {username, status, title, author, image, pages, country, price, url} = req.body;
+    const {token, title, author, image, pages, country, price, url} = req.body;
 
-    if (username !== "admin" || status !== true) {
-        return res.send({message: "You need to be an admin to add book"});
+    const decode = jwt.verify(token, jwtSecretkey);
+
+    if (decode.username !== "admin" || !token) {
+        return res.send({message: "You need to be an admin to add book", username: username});
     } 
 
     if (errors.array().length > 0) {

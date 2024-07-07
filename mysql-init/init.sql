@@ -323,13 +323,10 @@ CREATE TABLE IF NOT EXISTS accounts (id INT AUTO_INCREMENT,
     PRIMARY KEY(id)
 );
 
-INSERT INTO accounts (username, password) VALUES 
-    ("admin", "imadmin"),
-    ("user", "imauser");
     
 CREATE TABLE IF NOT EXISTS tokens (id INT AUTO_INCREMENT, 
     username VARCHAR(50),
-    token VARCHAR(5000),
+    token VARCHAR(500),
     PRIMARY KEY(id)
 );
 

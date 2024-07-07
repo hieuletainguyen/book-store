@@ -11,8 +11,6 @@ router.post('/check-book',
     controller.checkBook);
 
 router.post('/add-book', 
-    body("username").not().isEmpty().escape(),
-    body("status").not().isEmpty().escape(),
     body('title').not().isEmpty().escape(),
     body('author').not().isEmpty().escape(),
     body('image').escape(),

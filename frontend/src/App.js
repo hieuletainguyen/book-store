@@ -10,7 +10,7 @@ import {
   Route,
 } from "react-router-dom";
 import AddBook from "./components/AddBook";
-
+import Cookies from "js-cookie";
 
 function App() {
   const [items, setItems] = useState([]);
@@ -19,6 +19,8 @@ function App() {
     status: false,
     username: ''
   })
+
+  
 
   
   const addToCart = (idToAdd) => {
@@ -55,9 +57,29 @@ function App() {
         console.error(error);
       }
     };
+    
+    const auth = async () => {
+      const token = Cookies.get("BOOKSTORES_TOKEN");
+      if (token) {
+        const response1 = await fetch(`${process.env.REACT_APP_BACKEND_URL}/auth_token`, {
+          method: "POST", 
+          headers: {
+              "Content-Type": "application/json",
+          },
+          body: JSON.stringify({token: token}),
+        });
+        const data1 = await response1.json();
+        setIsLoggedIn({
+            status: true,
+            username: data1.username
+          });
+      }
+      console.log(isLoggedIn)
+      console.log(token);
+    }
 
     bookFetch();
-      
+    auth();
   }, []);
 
   
@@ -82,7 +104,7 @@ function App() {
 
         <Route path="/signin" element={<Signin isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>} />
 
-        {isLoggedIn.username === "admin" && <Route path="/add-book" element={<AddBook isLoggedIn={isLoggedIn}/>} /> }
+        {isLoggedIn.username === "admin" && <Route path="/add-book" element={<AddBook />} /> }
       </Routes>
     </Router>
   );

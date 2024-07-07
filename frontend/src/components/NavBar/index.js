@@ -13,9 +13,9 @@ const NavBar = (props) => {
             method: "POST", 
             credentials: 'include',
             headers: {'Content-Type': "application/json"}, 
-            body: JSON.stringify({username: username, token: Cookies.get(username)})           
+            body: JSON.stringify({username: username, token: Cookies.get("BOOKSTORES_TOKEN")})           
         })
-        Cookies.remove(username);
+        Cookies.remove("BOOKSTORES_TOKEN");
 
         if (response.ok) {
             console.log(response.message)

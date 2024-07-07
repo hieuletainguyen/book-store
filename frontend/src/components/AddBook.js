@@ -1,7 +1,7 @@
-
+import Cookies from "js-cookie";
 import {useState } from "react";
 
-function AddBook (props) {
+function AddBook () {
     const [title, setTitle] = useState("");
     const [author, setAuthor] = useState("");
     const [image, setImage] = useState("");
@@ -9,8 +9,7 @@ function AddBook (props) {
     const [country, setCountry] = useState("");
     const [price, setPrice] = useState("");
     const [url, seUrl] = useState("");
-    const username = props.username;
-    const status = props.status;
+    const token = Cookies.get("BOOKSTORES_TOKEN");
 
 
     const handleSubmit = async () => {
@@ -20,7 +19,7 @@ function AddBook (props) {
             headers: {
                 "Content-Type": "application/json", 
             }, 
-            body: JSON.stringify({username, status, title, author, image, pages, country, price, url})
+            body: JSON.stringify({token, title, author, image, pages, country, price, url})
         });
 
         const data = await response.json();
@@ -41,6 +40,8 @@ function AddBook (props) {
             setCountry("");
             setPrice("");
             seUrl("");
+        } else {
+            console.log(data);
         }
     }
 
