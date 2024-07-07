@@ -11,7 +11,6 @@ function AddBook () {
     const [url, seUrl] = useState("");
     const token = Cookies.get("BOOKSTORES_TOKEN");
 
-
     const handleSubmit = async () => {
         
         const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/add-book`, {
