@@ -22,7 +22,7 @@ const addAccount = async (req, res) => {
             password: hash_password
         }
 
-        const unique = "SELECT distinct(username) FROM accounts WHERE username = ?";
+        const unique = "SELECT distinct(username) FROM accounts WHERE username = $1";
         database.query(unique, username, (err, result) => {
             if (err) {
                 return res.status(500).send({message: "Server Error"});
@@ -51,7 +51,7 @@ const addAccount = async (req, res) => {
 const authorization = async (req, res) => {
     const {username, password} = req.body;
 
-    const sqlQuery = "SELECT * FROM accounts WHERE username = ?";
+    const sqlQuery = "SELECT * FROM accounts WHERE username = $1";
 
     database.query(sqlQuery, [username], async (err, result) => {
         if (err) {
@@ -68,7 +68,7 @@ const authorization = async (req, res) => {
             
                 const token = jwt.sign({username: username}, jwtSecretkey, {expiresIn: "1h"});
 
-                const query1 = "INSERT INTO tokens (username, token) VALUES (?, ?)";
+                const query1 = "INSERT INTO tokens (username, token) VALUES ($1, $2)";
 
                 database.query(query1 , [username, token], (err, result) => {
                     if (err) throw err;
@@ -108,7 +108,7 @@ const logout = (req, res) => {
     const {username, token} = req.body;
 
     if (token) {
-        const query = "DELETE FROM tokens WHERE token = ? AND username = ?";
+        const query = "DELETE FROM tokens WHERE token = $1 AND username = $2";
         database.query(query, [token, username], (err, result) => {
             if (err) {
                 return res.status(500).send({message: "Server Error"});
@@ -123,9 +123,9 @@ const logout = (req, res) => {
 const checkAccount = (req, res) => {
     const {username} = req.body;
 
-    const sqlQuery = "SELECT * FROM accounts WHERE username = ?";
+    const sqlQuery = "SELECT * FROM accounts WHERE username = $1";
 
-    database.query(sqlQuery, username, (err, result) => {
+    database.query(sqlQuery, [username], (err, result) => {
         if (err) throw err;
 
         if (result.length === 0){
