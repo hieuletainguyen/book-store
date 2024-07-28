@@ -19,7 +19,7 @@ const getAllBooks = (req, res) => {
 const checkBook = (req, res) => {
     const {author, title} = req.body;
 
-    const sqlQuery = "SELECT author FROM bookstore WHERE title = $1 AND author = $2";
+    const sqlQuery = "SELECT author FROM bookstore WHERE title = ? AND author = ?";
 
 
     database.query(sqlQuery, [title, author], (err, result) => {
@@ -50,7 +50,7 @@ const addBook = (req, res) => {
         res.send(errors.array());
     } else {
 
-        const check = "SELECT * FROM bookstore WHERE title = $1 and  author = $2"; 
+        const check = "SELECT * FROM bookstore WHERE title = ? and  author = ?"; 
 
         database.query(check, [title, author], (err, result) => {
             if (err) throw err;
